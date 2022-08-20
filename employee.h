@@ -11,10 +11,10 @@ typedef struct Employee {
     double pay;
 } TFunc;
 
-typedef struct KeyID {
+struct KeyID {
     int id;
-    int RRN;
-}TKeyID;
+    long RRN;
+};
 
 void saveRegisterEmployee(TFunc *func, FILE *out);
 TFunc *readRegisterEmployee(FILE *in);
@@ -24,6 +24,6 @@ void printEmployee (TFunc *func);
 TFunc *sequentialFetch(int id, FILE *file, int *totalComparisons);
 void shuffleVet(int *vet, int vetSize);
 TFunc *insertionSort(FILE *file, int sizeFile);
-TFunc *keySort(FILE *file);
+TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile, int id, double **timeSortingKeySort);
 
 #endif

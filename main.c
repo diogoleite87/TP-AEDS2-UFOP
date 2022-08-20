@@ -164,19 +164,52 @@ TFunc *insertionSort(FILE *file, int sizeFile) {
     fflush(file);
 }
 
-TFunc *keySort(FILE *file) {
+TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile, int id, double **timeSortingKeySort) {
     printf("\nSorting for KeySort...");
 
+
+    rewind(file);
+
+    struct KeyID keys[sizeFile];
     int position = 0;
 
-    while (!feof(file)) {
+    while (position < sizeFile){
 
         fseek(file, position * sizeof(TFunc), SEEK_SET);
+
+        keys[position].RRN = ftell(file);
+
         TFunc *func = readRegisterEmployee(file);
+
+        keys[position].id = func->id;
 
         position++;
     }
-    
+
+    int i, j;
+    struct KeyID aux;
+
+    for (i=0; i< sizeFile; i++) {
+        for (j=i+1; j< sizeFile; j++) {
+            if (keys[i].id > keys[j].id) {
+                aux = keys[i];
+                keys[i] = keys[j];
+                keys[j] = aux;
+            }
+        }
+    }
+
+    rewind(file);
+
+    for(int k = 0; k < sizeFile; ++k) {
+
+        fseek(file, keys[k].RRN, SEEK_SET);
+        TFunc *aux1 = readRegisterEmployee(file);
+
+        fseek(sortedFile, k * sizeof(TFunc), SEEK_SET);
+        saveRegisterEmployee(aux1, sortedFile);
+    }
+
 }
 
 int main() {
@@ -227,34 +260,53 @@ int main() {
 
             if (sortingMethod == 1) {
                 insertionSort(file, numFunc);
+
+                printf("\nPerforming binary search...");
+
+                clock_t beginBinary = clock();
+
+                TFunc *funcBinaryFetch = binaryFetch(idEmployee, file, numFunc, &totalComparisonsBinaryFetch);
+
+                clock_t endBinary = clock();
+                timeSpentBinaryFetch += (double)(endBinary - beginBinary) / CLOCKS_PER_SEC;
+
+                if (funcBinaryFetch == NULL) {
+                    printf("\nRegister not found.\n");
+                } else {
+                    printf("\nRecord found in Binary Fetch: \n");
+                    printEmployee(funcBinaryFetch);
+                }
+
             } else {
-                keySort(file);
-            }
 
-            /* int position = 0;
+                FILE *sortedFile = fopen("sortedRegister.dat", "wb+");
 
-            while (!feof(file)) {
+                double timeSpentKeySort = 0.0;
 
-                fseek(file, position * sizeof(TFunc), SEEK_SET);
-                position++;
-                TFunc *aux = readRegisterEmployee(file);
-                printEmployee(aux);
-            } */
+                clock_t beginKeySort = clock();
 
-            printf("\nPerforming binary search...");
+                keySort(file, sortedFile, numFunc, idEmployee, &timeSpentKeySort);
 
-            clock_t beginBinary = clock();
+                clock_t endKeySort = clock();
+                timeSpentKeySort += (double)(endKeySort - beginKeySort) / CLOCKS_PER_SEC;
 
-            TFunc *funcBinaryFetch = binaryFetch(idEmployee, file, numFunc, &totalComparisonsBinaryFetch);
+                clock_t beginBinary = clock();
 
-            clock_t endBinary = clock();
-            timeSpentBinaryFetch += (double)(endBinary - beginBinary) / CLOCKS_PER_SEC;
+                TFunc *funcBinaryFetch = binaryFetch(idEmployee, sortedFile, numFunc, &totalComparisonsBinaryFetch);
 
-            if (funcBinaryFetch == NULL) {
-                printf("\nRegister not found.\n");
-            } else {
-                printf("\nRecord found in Binary Fetch: \n");
-                printEmployee(funcBinaryFetch);
+                clock_t endBinary = clock();
+                timeSpentBinaryFetch += (double)(endBinary - beginBinary) / CLOCKS_PER_SEC;
+
+                if (funcBinaryFetch == NULL) {
+                    printf("\nRegister not found.\n");
+                } else {
+                    printf("\nRecord found in Binary Fetch in KeySort: \n");
+                    printEmployee(func);
+                }
+
+                printf("\nThe elapsed time sorting KeySort: %f\n", timeSpentKeySort);
+
+                fclose(sortedFile);
             }
 
             printf("\nThe elapsed time in sequential fetch is %f seconds.\n", timeSpentDefault);
@@ -308,35 +360,55 @@ int main() {
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
+
                 insertionSort(file, 100);
+
+                printf("\nPerforming binary search...");
+
+                clock_t beginBinary = clock();
+
+                TFunc *funcBinaryFetch = binaryFetch(idEmployee, file, 1000, &totalComparisonsBinaryFetch);
+
+                clock_t endBinary = clock();
+                timeSpentBinaryFetch += (double)(endBinary - beginBinary) / CLOCKS_PER_SEC;
+
+                if (funcBinaryFetch == NULL) {
+                    printf("\nRegister not found.\n");
+                } else {
+                    printf("\nRecord found in Binary Fetch: \n");
+                    printEmployee(funcBinaryFetch);
+                }
+
             } else {
-                keySort(file);
-            }
 
-            /* int position = 0;
+                FILE *sortedFile = fopen("sortedRegister.dat", "wb+");
 
-            while (!feof(file)) {
+                double timeSpentKeySort = 0.0;
 
-                fseek(file, position * sizeof(TFunc), SEEK_SET);
-                position++;
-                TFunc *aux = readRegisterEmployee(file);
-                printEmployee(aux);
-            } */
+                clock_t beginKeySort = clock();
 
-            printf("\nPerforming binary search...");
+                keySort(file, sortedFile, 1000, idEmployee, &timeSpentKeySort);
 
-            clock_t beginBinary = clock();
+                clock_t endKeySort = clock();
+                timeSpentKeySort += (double)(endKeySort - beginKeySort) / CLOCKS_PER_SEC;
 
-            TFunc *funcBinaryFetch = binaryFetch(idEmployee, file, sizeof(file), &totalComparisonsBinaryFetch);
+                clock_t beginBinary = clock();
 
-            clock_t endBinary = clock();
-            timeSpentBinaryFetch += (double)(endBinary - beginBinary) / CLOCKS_PER_SEC;
+                TFunc *funcBinaryFetch = binaryFetch(idEmployee, sortedFile, 1000, &totalComparisonsBinaryFetch);
 
-            if (funcBinaryFetch == NULL) {
-                printf("\nRegister not found.\n");
-            } else {
-                printf("\nRecord found in Binary Fetch: \n");
-                printEmployee(funcBinaryFetch);
+                clock_t endBinary = clock();
+                timeSpentBinaryFetch += (double)(endBinary - beginBinary) / CLOCKS_PER_SEC;
+
+                if (funcBinaryFetch == NULL) {
+                    printf("\nRegister not found.\n");
+                } else {
+                    printf("\nRecord found in Binary Fetch in KeySort: \n");
+                    printEmployee(func);
+                }
+
+                printf("\nThe elapsed time sorting KeySort: %f\n", timeSpentKeySort);
+
+                fclose(sortedFile);
             }
 
             printf("\nThe elapsed time in Sequential Fetch is %f seconds.\n", timeSpentDefault);
