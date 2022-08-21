@@ -24,6 +24,7 @@ void printEmployee (TFunc *func);
 TFunc *sequentialFetch(int id, FILE *file, int *totalComparisons);
 void shuffleVet(int *vet, int vetSize);
 TFunc *insertionSort(FILE *file, int sizeFile);
-TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile, int id, double **timeSortingKeySort);
+TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile);
+int sizeFile(FILE *file, int contSizeFile);
 
 #endif

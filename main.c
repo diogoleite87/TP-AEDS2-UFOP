@@ -164,7 +164,7 @@ TFunc *insertionSort(FILE *file, int sizeFile) {
     fflush(file);
 }
 
-TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile, int id, double **timeSortingKeySort) {
+TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile) {
     printf("\nSorting for KeySort...");
 
 
@@ -210,6 +210,27 @@ TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile, int id, double **time
         saveRegisterEmployee(aux1, sortedFile);
     }
 
+}
+
+int sizeFile(FILE *file, int contSizeFile) {
+
+    int cont = 0;
+    int bytesAUX = 0;
+    char c, auxC = '\n';
+
+    while(!feof(file)) {
+
+        fseek(file, bytesAUX * sizeof(TFunc), SEEK_SET);
+
+        TFunc *aux = readRegisterEmployee(file);
+        if(aux != NULL) {
+            contSizeFile++;
+        }
+
+        bytesAUX++;
+    }
+
+    return contSizeFile;
 }
 
 int main() {
@@ -285,7 +306,7 @@ int main() {
 
                 clock_t beginKeySort = clock();
 
-                keySort(file, sortedFile, numFunc, idEmployee, &timeSpentKeySort);
+                keySort(file, sortedFile, numFunc);
 
                 clock_t endKeySort = clock();
                 timeSpentKeySort += (double)(endKeySort - beginKeySort) / CLOCKS_PER_SEC;
@@ -361,13 +382,17 @@ int main() {
 
             if (sortingMethod == 1) {
 
-                insertionSort(file, 100);
+                int contSizeFile = 0;
+                contSizeFile = sizeFile(file, contSizeFile);
+
+                insertionSort(file, contSizeFile);
 
                 printf("\nPerforming binary search...");
 
                 clock_t beginBinary = clock();
 
-                TFunc *funcBinaryFetch = binaryFetch(idEmployee, file, 1000, &totalComparisonsBinaryFetch);
+
+                TFunc *funcBinaryFetch = binaryFetch(idEmployee, file, contSizeFile, &totalComparisonsBinaryFetch);
 
                 clock_t endBinary = clock();
                 timeSpentBinaryFetch += (double)(endBinary - beginBinary) / CLOCKS_PER_SEC;
@@ -383,18 +408,22 @@ int main() {
 
                 FILE *sortedFile = fopen("sortedRegister.dat", "wb+");
 
+                int contSizeFile = 0;
+                contSizeFile = sizeFile(file, contSizeFile);
+
                 double timeSpentKeySort = 0.0;
 
                 clock_t beginKeySort = clock();
 
-                keySort(file, sortedFile, 1000, idEmployee, &timeSpentKeySort);
+                keySort(file, sortedFile, contSizeFile);
 
                 clock_t endKeySort = clock();
                 timeSpentKeySort += (double)(endKeySort - beginKeySort) / CLOCKS_PER_SEC;
 
                 clock_t beginBinary = clock();
 
-                TFunc *funcBinaryFetch = binaryFetch(idEmployee, sortedFile, 1000, &totalComparisonsBinaryFetch);
+
+                TFunc *funcBinaryFetch = binaryFetch(idEmployee, sortedFile, contSizeFile, &totalComparisonsBinaryFetch);
 
                 clock_t endBinary = clock();
                 timeSpentBinaryFetch += (double)(endBinary - beginBinary) / CLOCKS_PER_SEC;
