@@ -29,5 +29,6 @@ int sizeFile(FILE *file, int contSizeFile);
 TFunc *printPartitionEmployeeID(FILE *file, char partitionName[]);
 int allVetFrozen (int vet[6]);
 TFunc *substitutionSelection (FILE *file);
+TFunc *naturalSelection (FILE *file);
 
 #endif
