@@ -26,5 +26,8 @@ void shuffleVet(int *vet, int vetSize);
 TFunc *insertionSort(FILE *file, int sizeFile);
 TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile);
 int sizeFile(FILE *file, int contSizeFile);
+TFunc *printPartitionEmployeeID(FILE *file, char partitionName[]);
+int allVetFrozen (int vet[6]);
+TFunc *substitutionSelection (FILE *file);
 
 #endif

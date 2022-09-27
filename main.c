@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 #include "employee.h"
 
 void saveRegisterEmployee(TFunc *func, FILE *out) {
@@ -233,6 +234,141 @@ int sizeFile(FILE *file, int contSizeFile) {
     return contSizeFile;
 }
 
+TFunc *printPartitionEmployeeID(FILE *file, char partitionName[]) {
+
+    printf("\nIDs employee of partition %s: \n --->  ", partitionName);
+
+    for (int i = 0; i < sizeFile(file, 0); ++i) {
+
+        fseek(file, i * sizeof(TFunc), SEEK_SET) ;
+        TFunc *aux = readRegisterEmployee(file);
+
+        printf(" %i ", aux->id);
+    }
+
+    printf("\n");
+}
+
+int allVetFrozen (int vet[6]) {
+
+    int cont = 0;
+
+    for (int i = 0; i < 6; ++i) {
+        if (vet[i] == 1) {
+            cont++;
+        }
+    }
+
+    if (cont == 6) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+TFunc *substitutionSelection (FILE *file) {
+
+    int numberOfPartition = 0, contSizeFile = 0, position = 5, smallElementPosition = 0, smallElement = 999999, sizeFileAux = 0, selectedPosition = 0;
+    struct Employee func[6];
+    int auxVetFunc [6] = {0, 0, 0, 0, 0, 0};
+
+    rewind(file);
+
+    sizeFileAux = sizeFile(file, contSizeFile);
+
+
+    printf("\nPerforming substitution selection...");
+
+    for (int i = 0; i < 6; ++i) {
+        fseek(file, i * sizeof(TFunc), SEEK_SET);
+
+        TFunc *aux = readRegisterEmployee(file);
+        func[i] = *aux;
+
+    }
+
+    for (int i = 0; i < 6; ++i) {
+        auxVetFunc[i] = func[i].id;
+    }
+
+    while (position != sizeFileAux) {
+
+        char partitionName[100];
+        char str1[100] = "substitutionSelectionPartition";
+        char str2[100];
+        char str3[100] = ".dat";
+
+        itoa(numberOfPartition,str2,10);
+        strcat(strcpy(partitionName, str1), str2);
+        strcat(strcpy(partitionName, partitionName), str3);
+
+        FILE *filePartition = fopen(partitionName, "wb+");
+
+        int auxVetFrozen[6] = {0, 0, 0, 0, 0, 0,};
+
+        while (position != sizeFileAux) {
+
+            smallElement = 9999999;
+
+            for (int i = 0; i < 6; ++i) {
+
+                if (smallElement > auxVetFunc[i] && auxVetFrozen[i] != 1) {
+                    smallElement = auxVetFunc[i];
+                    smallElementPosition = i;
+                }
+            }
+
+            saveRegisterEmployee(&func[smallElementPosition], filePartition);
+
+            fseek(file, position * sizeof(TFunc), SEEK_SET);
+
+            TFunc *aux = readRegisterEmployee(file);
+
+            auxVetFunc[smallElementPosition] = aux->id;
+            func[smallElementPosition] = *aux;
+
+            if (aux->id < smallElement) {
+                auxVetFrozen[smallElementPosition] = 1;
+            }
+
+
+            if(allVetFrozen(auxVetFrozen) == 1) {
+                numberOfPartition++;
+                break;
+            }
+
+            position++;
+        }
+
+        fclose(filePartition);
+
+        if (position >= sizeFileAux) {
+            break;
+        }
+
+    }
+
+    for (int i = 0; i <= numberOfPartition; ++i) {
+
+        char partitionName[100];
+        char str1[100] = "substitutionSelectionPartition";
+        char str2[100];
+        char str3[100] = ".dat";
+
+        itoa(i,str2,10);
+        strcat(strcpy(partitionName, str1), str2);
+        strcat(strcpy(partitionName, partitionName), str3);
+
+        FILE *filePartition = fopen(partitionName, "rb+");
+
+        printPartitionEmployeeID(filePartition, partitionName);
+
+        fclose(filePartition);
+    }
+
+
+}
+
 int main() {
     printf("Starting...\n");
 
@@ -276,7 +412,7 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort. \n   ---> ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection;\n 4 - Natural Selection.\n --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
@@ -298,7 +434,7 @@ int main() {
                     printEmployee(funcBinaryFetch);
                 }
 
-            } else {
+            } else if (sortingMethod == 2) {
 
                 FILE *sortedFile = fopen("sortedRegister.dat", "wb+");
 
@@ -328,6 +464,12 @@ int main() {
                 printf("\nThe elapsed time sorting KeySort: %f\n", timeSpentKeySort);
 
                 fclose(sortedFile);
+            } else {
+                substitutionSelection(file);
+
+                fclose(file);
+
+                exit(1);
             }
 
             printf("\nThe elapsed time in sequential fetch is %f seconds.\n", timeSpentDefault);
@@ -377,7 +519,7 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort. \n   ---> ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection;\n 4 - Natural Selection.\n --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
@@ -404,7 +546,7 @@ int main() {
                     printEmployee(funcBinaryFetch);
                 }
 
-            } else {
+            } else if (sortingMethod == 2){
 
                 FILE *sortedFile = fopen("sortedRegister.dat", "wb+");
 
@@ -438,6 +580,12 @@ int main() {
                 printf("\nThe elapsed time sorting KeySort: %f\n", timeSpentKeySort);
 
                 fclose(sortedFile);
+            } else {
+                substitutionSelection(file);
+
+                fclose(file);
+
+                exit(1);
             }
 
             printf("\nThe elapsed time in Sequential Fetch is %f seconds.\n", timeSpentDefault);
