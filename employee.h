@@ -28,6 +28,7 @@ TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile);
 int sizeFile(FILE *file, int contSizeFile);
 TFunc *printPartitionEmployeeID(FILE *file, char partitionName[]);
 int allVetFrozen (int vet[6]);
+TFunc *mergeSort (int numberOfPartition);
 TFunc *substitutionSelection (FILE *file);
 TFunc *naturalSelection (FILE *file);
 

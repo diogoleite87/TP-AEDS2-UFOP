@@ -130,7 +130,6 @@ TFunc *sequentialFetch(int id, FILE *file, int *totalComparisons) {
 
 TFunc *insertionSort(FILE *file, int sizeFile) {
 
-    printf("\nSorting with Insertion Sort...");
     rewind(file);
     int i;
 
@@ -266,9 +265,121 @@ int allVetFrozen (int vet[6]) {
     }
 }
 
+TFunc *mergeSort (int numberOfPartition) {
+
+    printf("\nPerforming MergeSort...");
+
+    int *vetAux = (int *) malloc(numberOfPartition * sizeof(int));
+    int *vetAux2 = (int *) malloc(numberOfPartition * sizeof(int));
+    int *vetFlagAux = (int *) malloc(numberOfPartition * sizeof(int));
+    int flagAux = numberOfPartition;
+
+    FILE *file = fopen("mergeSortFileSorted.dat", "wb+");
+
+    for (int i = 0; i <= numberOfPartition; ++i) {
+
+        char partitionName[100];
+        char str1[100] = "substitutionSelectionPartition";
+        char str2[100];
+        char str3[100] = ".dat";
+
+        itoa(i,str2,10);
+        strcat(strcpy(partitionName, str1), str2);
+        strcat(strcpy(partitionName, partitionName), str3);
+
+        FILE *filePartition = fopen(partitionName, "rb+");
+
+        rewind(filePartition);
+
+        vetAux[i] = sizeFile(filePartition, 0);
+        vetAux2[i] = 0;
+
+        fclose(filePartition);
+    }
+
+    while (flagAux >= 0) {
+
+        FILE *fileAux = fopen("fileAuxMergeSort.dat", "wb+");
+
+        flagAux = numberOfPartition;
+
+        for (int i = 0; i <= numberOfPartition; ++i) {
+
+            char partitionName[100];
+            char str1[100] = "substitutionSelectionPartition";
+            char str2[100];
+            char str3[100] = ".dat";
+
+            itoa(i,str2,10);
+            strcat(strcpy(partitionName, str1), str2);
+            strcat(strcpy(partitionName, partitionName), str3);
+
+            FILE *filePartition = fopen(partitionName, "rb+");
+
+            if (vetAux[i] != 0) {
+
+                fseek(filePartition,  vetAux2[i] * sizeof(TFunc), SEEK_SET) ;
+                TFunc *func = readRegisterEmployee(filePartition);
+                vetAux2[i]++;
+
+                saveRegisterEmployee(func, fileAux);
+                vetAux[i]--;
+            }
+
+            for (int j = 0; j <= numberOfPartition; ++j) {
+
+                if (vetAux[j] == 0) {
+                    vetFlagAux[j] = 1;
+                } else {
+                    vetFlagAux[j] = 0;
+                }
+
+            }
+
+            fclose(filePartition);
+        }
+
+        for (int k = 0; k <= numberOfPartition; ++k) {
+
+            if (vetAux[k] == 0) {
+                flagAux--;
+            }
+
+        }
+
+
+        rewind(fileAux);
+        int sizeFileAux = sizeFile(fileAux, 0);
+
+
+        insertionSort(fileAux, sizeFileAux);
+
+
+        rewind(fileAux);
+
+        for (int i = 0; i < sizeFileAux; ++i) {
+
+            TFunc *auxFunc = readRegisterEmployee(fileAux);
+            saveRegisterEmployee(auxFunc, file);
+
+        }
+
+
+        fclose(fileAux);
+
+    }
+
+    printPartitionEmployeeID(file, "mergeSortFileSorted.dat");
+
+    fclose(file);
+    free(vetAux2);
+    free(vetFlagAux);
+    free(vetAux);
+}
+
 TFunc *substitutionSelection (FILE *file) {
 
-    int numberOfPartition = 0, contSizeFile = 0, position = 5, smallElementPosition = 0, smallElement = 999999, sizeFileAux = 0, selectedPosition = 0;
+    int numberOfPartition = 0, contSizeFile = 0, position = 6, smallElementPosition = 0, smallElement = 999999, sizeFileAux = 0, selectedPosition = 0;
     struct Employee func[6];
     int auxVetFunc [6] = {0, 0, 0, 0, 0, 0};
 
@@ -324,6 +435,8 @@ TFunc *substitutionSelection (FILE *file) {
 
             TFunc *aux = readRegisterEmployee(file);
 
+            position++;
+
             auxVetFunc[smallElementPosition] = aux->id;
             func[smallElementPosition] = *aux;
 
@@ -331,13 +444,11 @@ TFunc *substitutionSelection (FILE *file) {
                 auxVetFrozen[smallElementPosition] = 1;
             }
 
-
             if(allVetFrozen(auxVetFrozen) == 1) {
                 numberOfPartition++;
                 break;
             }
 
-            position++;
         }
 
         fclose(filePartition);
@@ -348,12 +459,43 @@ TFunc *substitutionSelection (FILE *file) {
 
     }
 
+    char partitionName[100];
+    char str1[100] = "substitutionSelectionPartition";
+    char str2[100];
+    char str3[100] = ".dat";
+
+    itoa(numberOfPartition,str2,10);
+    strcat(strcpy(partitionName, str1), str2);
+    strcat(strcpy(partitionName, partitionName), str3);
+
+    FILE *filePartitionFinal = fopen(partitionName, "ab+");
+
+    printPartitionEmployeeID(filePartitionFinal, partitionName);
+
+    int k, j;
+
+    struct Employee funcAux;
+
+    for (k = 1; k < 6; k++) {
+
+        for (j = 0; j < 6 - 1; j++) {
+
+            if (func[j].id > func[j + 1].id) {
+                funcAux = func[j];
+                func[j] = func[j + 1];
+                func[j + 1] = funcAux;
+            }
+        }
+    }
+
+    for (int i = 0; i < 6; ++i) {
+            saveRegisterEmployee(&func[i], filePartitionFinal);
+    }
+
+    fclose(filePartitionFinal);
+
     for (int i = 0; i <= numberOfPartition; ++i) {
 
-        char partitionName[100];
-        char str1[100] = "substitutionSelectionPartition";
-        char str2[100];
-        char str3[100] = ".dat";
 
         itoa(i,str2,10);
         strcat(strcpy(partitionName, str1), str2);
@@ -366,6 +508,7 @@ TFunc *substitutionSelection (FILE *file) {
         fclose(filePartition);
     }
 
+    mergeSort(numberOfPartition);
 
 }
 
@@ -548,10 +691,13 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection;\n 4 - Natural Selection.\n --->  ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection.\n --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
+
+                printf("\nSorting with Insertion Sort...");
+
                 insertionSort(file, numFunc);
 
                 printf("\nPerforming binary search...");
@@ -661,13 +807,15 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection;\n 4 - Natural Selection.\n --->  ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection.\n --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
 
                 int contSizeFile = 0;
                 contSizeFile = sizeFile(file, contSizeFile);
+
+                printf("\nSorting with Insertion Sort...");
 
                 insertionSort(file, contSizeFile);
 
