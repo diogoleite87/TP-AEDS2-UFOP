@@ -1,7 +1,10 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 
+#include <stdio.h>
+#include <time.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct Employee {
     int id;
@@ -24,12 +27,12 @@ void printEmployee (TFunc *func);
 TFunc *sequentialFetch(int id, FILE *file, int *totalComparisons);
 void shuffleVet(int *vet, int vetSize);
 TFunc *insertionSort(FILE *file, int sizeFile);
-TFunc *keySort(FILE *file, FILE *sortedFile, int sizeFile);
+void keySort(FILE *file, FILE *sortedFile, int sizeFile);
 int sizeFile(FILE *file, int contSizeFile);
-TFunc *printPartitionEmployeeID(FILE *file, char partitionName[]);
+void printPartitionEmployeeID(FILE *file, char partitionName[]);
 int allVetFrozen (int vet[6]);
-TFunc *mergeSort (int numberOfPartition);
-TFunc *substitutionSelection (FILE *file);
-TFunc *naturalSelection (FILE *file);
+void mergeSort (int numberOfPartition);
+void substitutionSelection (FILE *file);
+void naturalSelection (FILE *file);
 
 #endif
