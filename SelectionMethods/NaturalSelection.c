@@ -4,7 +4,7 @@
 
 #include "Headers/employee.h"
 
-void naturalSelection (FILE *file) {
+int naturalSelection(FILE *file, char nameFilePartition[]) {
 
     int  sizeFileAux = sizeFile(file, 0), position = 0, numberOfPartition = 0, smallElement = 999999999, smallElementPosition = 0, sizeReservoir = 0, flag = 0;
 
@@ -21,13 +21,12 @@ void naturalSelection (FILE *file) {
         FILE *fileReservoir = fopen("reservoir.dat", "wb+");
 
         char partitionName[100];
-        char str1[100] = "naturalSelectionPartition";
-        char str2[100];
-        char str3[100] = ".dat";
+        char str1[100];
+        char str2[100] = ".dat";
 
-        itoa(numberOfPartition,str2,10);
-        strcat(strcpy(partitionName, str1), str2);
-        strcat(strcpy(partitionName, partitionName), str3);
+        itoa(numberOfPartition, str1, 10);
+        strcat(strcpy(partitionName, nameFilePartition), str1);
+        strcat(strcpy(partitionName, partitionName), str2);
 
         FILE *filePartition = fopen(partitionName, "wb+");
 
@@ -124,13 +123,12 @@ void naturalSelection (FILE *file) {
     for (int i = 0; i <= numberOfPartition; ++i) {
 
         char partitionName[100];
-        char str1[100] = "naturalSelectionPartition";
-        char str2[100];
-        char str3[100] = ".dat";
+        char str1[100];
+        char str2[100] = ".dat";
 
-        itoa(i,str2,10);
-        strcat(strcpy(partitionName, str1), str2);
-        strcat(strcpy(partitionName, partitionName), str3);
+        itoa(i, str1, 10);
+        strcat(strcpy(partitionName, nameFilePartition), str1);
+        strcat(strcpy(partitionName, partitionName), str2);
 
         FILE *filePartition = fopen(partitionName, "rb+");
 
@@ -138,4 +136,6 @@ void naturalSelection (FILE *file) {
 
         fclose(filePartition);
     }
+
+    return numberOfPartition;
 }

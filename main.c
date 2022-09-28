@@ -99,17 +99,22 @@ int main() {
 
                 fclose(sortedFile);
             } else if (sortingMethod == 3){
-                substitutionSelection(file);
+
+                int numberOfPartition = 0;
+                numberOfPartition = substitutionSelection(file, "substitutionSelectionPartition");
+                mergeSort(numberOfPartition, "substitutionSelectionPartition");
 
                 fclose(file);
 
-                exit(1);
+                exit(0);
             } else {
-                naturalSelection(file);
+                int numberOfPartition = 0;
+                numberOfPartition = naturalSelection(file, "naturalSelectionPartition");
+//                mergeSort(numberOfPartition, "naturalSelectionPartition");
 
                 fclose(file);
 
-                exit(1);
+                exit(0);
             }
 
             printf("\nThe elapsed time in sequential fetch is %f seconds.\n", timeSpentDefault);
@@ -223,17 +228,21 @@ int main() {
 
                 fclose(sortedFile);
             } else if (sortingMethod == 3){
-                substitutionSelection(file);
+                int numberOfPartition = 0;
+                numberOfPartition = substitutionSelection(file, "substitutionSelectionPartition");
+                mergeSort(numberOfPartition, "substitutionSelectionPartition");
 
                 fclose(file);
 
-                exit(1);
+                exit(0);
             } else {
-                naturalSelection(file);
+                int numberOfPartition = 0;
+                numberOfPartition = naturalSelection(file, "naturalSelectionPartition");
+//                mergeSort(numberOfPartition, "naturalSelectionPartition");
 
                 fclose(file);
 
-                exit(1);
+                exit(0);
             }
 
             printf("\nThe elapsed time in Sequential Fetch is %f seconds.\n", timeSpentDefault);

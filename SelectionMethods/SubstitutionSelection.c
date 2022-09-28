@@ -4,7 +4,7 @@
 
 #include "Headers/employee.h"
 
-void substitutionSelection (FILE *file) {
+int substitutionSelection (FILE *file, char nameFilePartition[]) {
 
     int numberOfPartition = 0, contSizeFile = 0, position = 6, smallElementPosition = 0, smallElement = 999999, sizeFileAux = 0, selectedPosition = 0;
     struct Employee func[6];
@@ -32,13 +32,12 @@ void substitutionSelection (FILE *file) {
     while (position != sizeFileAux) {
 
         char partitionName[100];
-        char str1[100] = "substitutionSelectionPartition";
-        char str2[100];
-        char str3[100] = ".dat";
+        char str1[100];
+        char str2[100] = ".dat";
 
-        itoa(numberOfPartition,str2,10);
-        strcat(strcpy(partitionName, str1), str2);
-        strcat(strcpy(partitionName, partitionName), str3);
+        itoa(numberOfPartition, str1, 10);
+        strcat(strcpy(partitionName, nameFilePartition), str1);
+        strcat(strcpy(partitionName, partitionName), str2);
 
         FILE *filePartition = fopen(partitionName, "wb+");
 
@@ -87,13 +86,12 @@ void substitutionSelection (FILE *file) {
     }
 
     char partitionName[100];
-    char str1[100] = "substitutionSelectionPartition";
-    char str2[100];
-    char str3[100] = ".dat";
+    char str1[100];
+    char str2[100] = ".dat";
 
-    itoa(numberOfPartition,str2,10);
-    strcat(strcpy(partitionName, str1), str2);
-    strcat(strcpy(partitionName, partitionName), str3);
+    itoa(numberOfPartition, str1, 10);
+    strcat(strcpy(partitionName, nameFilePartition), str1);
+    strcat(strcpy(partitionName, partitionName), str2);
 
     FILE *filePartitionFinal = fopen(partitionName, "ab+");
 
@@ -122,9 +120,9 @@ void substitutionSelection (FILE *file) {
     for (int i = 0; i <= numberOfPartition; ++i) {
 
 
-        itoa(i,str2,10);
-        strcat(strcpy(partitionName, str1), str2);
-        strcat(strcpy(partitionName, partitionName), str3);
+        itoa(i, str1, 10);
+        strcat(strcpy(partitionName, nameFilePartition), str1);
+        strcat(strcpy(partitionName, partitionName), str2);
 
         FILE *filePartition = fopen(partitionName, "rb+");
 
@@ -133,6 +131,6 @@ void substitutionSelection (FILE *file) {
         fclose(filePartition);
     }
 
-    mergeSort(numberOfPartition);
+    return numberOfPartition;
 
 }

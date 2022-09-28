@@ -4,7 +4,7 @@
 
 #include "Headers/employee.h"
 
-void mergeSort (int numberOfPartition) {
+void mergeSort(int numberOfPartition, char nameFilePartition[]) {
 
     printf("\nPerforming MergeSort...");
 
@@ -23,7 +23,7 @@ void mergeSort (int numberOfPartition) {
         char str3[100] = ".dat";
 
         itoa(i,str2,10);
-        strcat(strcpy(partitionName, str1), str2);
+        strcat(strcpy(partitionName, nameFilePartition), str2);
         strcat(strcpy(partitionName, partitionName), str3);
 
         FILE *filePartition = fopen(partitionName, "rb+");
@@ -50,7 +50,7 @@ void mergeSort (int numberOfPartition) {
             char str3[100] = ".dat";
 
             itoa(i,str2,10);
-            strcat(strcpy(partitionName, str1), str2);
+            strcat(strcpy(partitionName, nameFilePartition), str2);
             strcat(strcpy(partitionName, partitionName), str3);
 
             FILE *filePartition = fopen(partitionName, "rb+");

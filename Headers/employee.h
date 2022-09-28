@@ -31,8 +31,8 @@ void keySort(FILE *file, FILE *sortedFile, int sizeFile);
 int sizeFile(FILE *file, int contSizeFile);
 void printPartitionEmployeeID(FILE *file, char partitionName[]);
 int allVetFrozen (int vet[6]);
-void mergeSort (int numberOfPartition);
-void substitutionSelection (FILE *file);
-void naturalSelection (FILE *file);
+void mergeSort(int numberOfPartition, char nameFilePartition[]);
+int substitutionSelection (FILE *file, char nameFilePartition[]);
+int naturalSelection(FILE *file, char nameFilePartition[]);
 
 #endif
