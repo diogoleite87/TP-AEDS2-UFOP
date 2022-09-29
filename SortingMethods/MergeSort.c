@@ -12,7 +12,7 @@ void mergeSort(int numberOfPartition, char nameFilePartition[]) {
     int *vetValueEmployeePartition = (int *) malloc(numberOfPartition * sizeof(int));
     int flagAuxFinal = 0, count, smallElement = 999999999, smallElementPosition = 0;
 
-    FILE *file = fopen("mergeSortFileSorted.dat", "wb+");
+    FILE *auxFileFinal = fopen("mergeSortFileSorted.dat", "wb+");
 
     for (int i = 0; i <= numberOfPartition; ++i) {
 
@@ -45,7 +45,7 @@ void mergeSort(int numberOfPartition, char nameFilePartition[]) {
 
         count = 0;
 
-        for (int i = 0; i < numberOfPartition; ++i) {
+        for (int i = 0; i <= numberOfPartition; ++i) {
 
             if (vetFinalPartition[i] == 1) {
                 count++;
@@ -56,7 +56,7 @@ void mergeSort(int numberOfPartition, char nameFilePartition[]) {
             }
         }
 
-        for (int i = 0; i < 6; ++i) {
+        for (int i = 0; i <= numberOfPartition; ++i) {
 
             if (vetValueEmployeePartition[i] < smallElement && vetFinalPartition[i] != 1) {
                 smallElement = vetValueEmployeePartition[i];
@@ -77,12 +77,12 @@ void mergeSort(int numberOfPartition, char nameFilePartition[]) {
         rewind(filePartition);
         fseek(filePartition, vetPositionPartition[smallElementPosition] * sizeof(TFunc), SEEK_SET);
         TFunc *auxFunc = readRegisterEmployee(filePartition);
-        saveRegisterEmployee(auxFunc, file);
+        saveRegisterEmployee(auxFunc, auxFileFinal);
         vetPositionPartition[smallElementPosition]++;
 
         rewind(filePartition);
 
-        if (vetPositionPartition[smallElementPosition] == vetSizePartition[smallElementPosition]) {
+        if (vetPositionPartition[smallElementPosition] >= vetSizePartition[smallElementPosition]) {
             vetFinalPartition[smallElementPosition] = 1;
         } else {
             fseek(filePartition, vetPositionPartition[smallElementPosition] * sizeof(TFunc), SEEK_SET);
@@ -96,9 +96,9 @@ void mergeSort(int numberOfPartition, char nameFilePartition[]) {
 
     }
 
-    printPartitionEmployeeID(file, "mergeSortFileSorted.dat");
+    printPartitionEmployeeID(auxFileFinal, "mergeSortFileSorted.dat");
 
-    fclose(file);
+    fclose(auxFileFinal);
     free(vetFinalPartition);
     free(vetSizePartition);
     free(vetPositionPartition);
