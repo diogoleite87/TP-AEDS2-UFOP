@@ -180,7 +180,6 @@ int main() {
 
                 clock_t beginBinary = clock();
 
-
                 TFunc *funcBinaryFetch = binaryFetch(idEmployee, file, contSizeFile, &totalComparisonsBinaryFetch);
 
                 clock_t endBinary = clock();
@@ -210,7 +209,6 @@ int main() {
                 timeSpentKeySort += (double)(endKeySort - beginKeySort) / CLOCKS_PER_SEC;
 
                 clock_t beginBinary = clock();
-
 
                 TFunc *funcBinaryFetch = binaryFetch(idEmployee, sortedFile, contSizeFile, &totalComparisonsBinaryFetch);
 

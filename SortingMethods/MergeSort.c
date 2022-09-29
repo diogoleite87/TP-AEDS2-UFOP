@@ -6,113 +6,101 @@
 
 void mergeSort(int numberOfPartition, char nameFilePartition[]) {
 
-    printf("\nPerforming MergeSort...");
-
-    int *vetAux = (int *) malloc(numberOfPartition * sizeof(int));
-    int *vetAux2 = (int *) malloc(numberOfPartition * sizeof(int));
-    int *vetFlagAux = (int *) malloc(numberOfPartition * sizeof(int));
-    int flagAux = numberOfPartition;
+    int *vetSizePartition = (int *) malloc(numberOfPartition * sizeof(int));
+    int *vetFinalPartition = (int *) malloc(numberOfPartition * sizeof(int));
+    int *vetPositionPartition = (int *) malloc(numberOfPartition * sizeof(int));
+    int *vetValueEmployeePartition = (int *) malloc(numberOfPartition * sizeof(int));
+    int flagAuxFinal = 0, count, smallElement = 999999999, smallElementPosition = 0;
 
     FILE *file = fopen("mergeSortFileSorted.dat", "wb+");
 
     for (int i = 0; i <= numberOfPartition; ++i) {
 
         char partitionName[100];
-        char str1[100] = "substitutionSelectionPartition";
-        char str2[100];
-        char str3[100] = ".dat";
+        char str1[100];
+        char str2[100] = ".dat";
 
-        itoa(i,str2,10);
-        strcat(strcpy(partitionName, nameFilePartition), str2);
-        strcat(strcpy(partitionName, partitionName), str3);
+        itoa(i, str1, 10);
+        strcat(strcpy(partitionName, nameFilePartition), str1);
+        strcat(strcpy(partitionName, partitionName), str2);
 
         FILE *filePartition = fopen(partitionName, "rb+");
 
         rewind(filePartition);
 
-        vetAux[i] = sizeFile(filePartition, 0);
-        vetAux2[i] = 0;
+        vetSizePartition[i] = sizeFile(filePartition, 0);
+        vetFinalPartition[i] = 0;
+        vetPositionPartition[i] = 0;
+
+        fseek(filePartition, vetPositionPartition[i] * sizeof(TFunc), SEEK_SET);
+        TFunc *auxFunc = readRegisterEmployee(filePartition);
+
+        vetValueEmployeePartition[i] = auxFunc->id;
 
         fclose(filePartition);
     }
 
-    while (flagAux >= 0) {
 
-        FILE *fileAux = fopen("fileAuxMergeSort.dat", "wb+");
+    while (flagAuxFinal != 1) {
 
-        flagAux = numberOfPartition;
+        count = 0;
 
-        for (int i = 0; i <= numberOfPartition; ++i) {
+        for (int i = 0; i < numberOfPartition; ++i) {
 
-            char partitionName[100];
-            char str1[100] = "substitutionSelectionPartition";
-            char str2[100];
-            char str3[100] = ".dat";
-
-            itoa(i,str2,10);
-            strcat(strcpy(partitionName, nameFilePartition), str2);
-            strcat(strcpy(partitionName, partitionName), str3);
-
-            FILE *filePartition = fopen(partitionName, "rb+");
-
-            if (vetAux[i] != 0) {
-
-                fseek(filePartition,  vetAux2[i] * sizeof(TFunc), SEEK_SET) ;
-                TFunc *func = readRegisterEmployee(filePartition);
-                vetAux2[i]++;
-
-                saveRegisterEmployee(func, fileAux);
-                vetAux[i]--;
+            if (vetFinalPartition[i] == 1) {
+                count++;
             }
 
-            for (int j = 0; j <= numberOfPartition; ++j) {
-
-                if (vetAux[j] == 0) {
-                    vetFlagAux[j] = 1;
-                } else {
-                    vetFlagAux[j] = 0;
-                }
-
+            if (count == numberOfPartition) {
+                flagAuxFinal = 1;
             }
-
-            fclose(filePartition);
         }
 
-        for (int k = 0; k <= numberOfPartition; ++k) {
+        for (int i = 0; i < 6; ++i) {
 
-            if (vetAux[k] == 0) {
-                flagAux--;
+            if (vetValueEmployeePartition[i] < smallElement && vetFinalPartition[i] != 1) {
+                smallElement = vetValueEmployeePartition[i];
+                smallElementPosition = i;
             }
-
         }
 
+        char partitionName[100];
+        char str1[100];
+        char str2[100] = ".dat";
 
-        rewind(fileAux);
-        int sizeFileAux = sizeFile(fileAux, 0);
+        itoa(smallElementPosition, str1, 10);
+        strcat(strcpy(partitionName, nameFilePartition), str1);
+        strcat(strcpy(partitionName, partitionName), str2);
 
+        FILE *filePartition = fopen(partitionName, "rb+");
 
-        insertionSort(fileAux, sizeFileAux);
+        rewind(filePartition);
+        fseek(filePartition, vetPositionPartition[smallElementPosition] * sizeof(TFunc), SEEK_SET);
+        TFunc *auxFunc = readRegisterEmployee(filePartition);
+        saveRegisterEmployee(auxFunc, file);
+        vetPositionPartition[smallElementPosition]++;
 
+        rewind(filePartition);
 
-        rewind(fileAux);
-
-        for (int i = 0; i < sizeFileAux; ++i) {
-
-            TFunc *auxFunc = readRegisterEmployee(fileAux);
-            saveRegisterEmployee(auxFunc, file);
-
+        if (vetPositionPartition[smallElementPosition] == vetSizePartition[smallElementPosition]) {
+            vetFinalPartition[smallElementPosition] = 1;
+        } else {
+            fseek(filePartition, vetPositionPartition[smallElementPosition] * sizeof(TFunc), SEEK_SET);
+            TFunc *auxFunc2 = readRegisterEmployee(filePartition);
+            vetValueEmployeePartition[smallElementPosition] = auxFunc2->id;
         }
 
+        fclose(filePartition);
 
-        fclose(fileAux);
+        smallElement = 999999999;
 
     }
 
     printPartitionEmployeeID(file, "mergeSortFileSorted.dat");
 
     fclose(file);
-    free(vetAux2);
-    free(vetFlagAux);
-    free(vetAux);
-
+    free(vetFinalPartition);
+    free(vetSizePartition);
+    free(vetPositionPartition);
+    free(vetValueEmployeePartition);
 }

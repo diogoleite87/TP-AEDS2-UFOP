@@ -34,5 +34,7 @@ int allVetFrozen (int vet[6]);
 void mergeSort(int numberOfPartition, char nameFilePartition[]);
 int substitutionSelection (FILE *file, char nameFilePartition[]);
 int naturalSelection(FILE *file, char nameFilePartition[]);
+void printAllEmployeeFile(FILE *file);
+void BinaryTreeOfWinners(int numberOfPartition, char nameFilePartition[]);
 
 #endif
