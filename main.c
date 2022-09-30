@@ -43,7 +43,7 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection.\n --->  ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection and Binary Tree Of Winners;\n 5 - Tree B;\n 6 - Tree B+. \n --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
@@ -95,7 +95,7 @@ int main() {
                     printEmployee(func);
                 }
 
-                printf("\nThe elapsed time sorting KeySort: %f\n", timeSpentKeySort);
+                printf("\nThe elapsed time sorting KeySort: %filePartition\n", timeSpentKeySort);
 
                 fclose(sortedFile);
             } else if (sortingMethod == 3){
@@ -106,21 +106,26 @@ int main() {
 
                 fclose(file);
 
-                exit(0);
+                return 0;
             } else {
-                int numberOfPartition = 0;
-                numberOfPartition = naturalSelection(file, "naturalSelectionPartition");
-//                mergeSort(numberOfPartition, "naturalSelectionPartition");
+                int numberOfPartition = 1;
+                numberOfPartition += naturalSelection(file, "naturalSelectionPartition");
+                binaryTreeOfWinners(numberOfPartition, "naturalSelectionPartition");
 
+                FILE *fileBinaryOfTreeSorted = fopen("binaryOfTreeFileSorted.dat","rb+");
+
+                printPartitionEmployeeID(fileBinaryOfTreeSorted, "binaryOfTreeFileSorted.dat");
+
+                fclose(fileBinaryOfTreeSorted);
                 fclose(file);
 
-                exit(0);
+                return 0;
             }
 
-            printf("\nThe elapsed time in sequential fetch is %f seconds.\n", timeSpentDefault);
+            printf("\nThe elapsed time in sequential fetch is %filePartition seconds.\n", timeSpentDefault);
             printf("Total of comparisons in sequential fetch: %i.\n", totalComparisonsSequential);
 
-            printf("\nThe elapsed time in Binary Fetch is %f seconds.\n", timeSpentBinaryFetch);
+            printf("\nThe elapsed time in Binary Fetch is %filePartition seconds.\n", timeSpentBinaryFetch);
             printf("Total of comparisons in Binary Fetch: %i.\n", totalComparisonsBinaryFetch);
 
             free(func);
@@ -164,7 +169,7 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection.\n --->  ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection and Binary Tree Of Winners;\n 5 - Tree B;\n 6 - Tree B+. \n --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
@@ -222,7 +227,7 @@ int main() {
                     printEmployee(func);
                 }
 
-                printf("\nThe elapsed time sorting KeySort: %f\n", timeSpentKeySort);
+                printf("\nThe elapsed time sorting KeySort: %filePartition\n", timeSpentKeySort);
 
                 fclose(sortedFile);
             } else if (sortingMethod == 3){
@@ -232,21 +237,26 @@ int main() {
 
                 fclose(file);
 
-                exit(0);
-            } else {
-                int numberOfPartition = 0;
-                numberOfPartition = naturalSelection(file, "naturalSelectionPartition");
-//                mergeSort(numberOfPartition, "naturalSelectionPartition");
+                return 0;
+            } else if (sortingMethod == 4 ){
+                int numberOfPartition = 1;
+                numberOfPartition += naturalSelection(file, "naturalSelectionPartition");
+                binaryTreeOfWinners(numberOfPartition, "naturalSelectionPartition");
 
+                FILE *fileBinaryOfTreeSorted = fopen("binaryOfTreeFileSorted.dat","rb+");
+
+                printPartitionEmployeeID(fileBinaryOfTreeSorted, "binaryOfTreeFileSorted.dat");
+
+                fclose(fileBinaryOfTreeSorted);
                 fclose(file);
 
-                exit(0);
+                return 0;
             }
 
-            printf("\nThe elapsed time in Sequential Fetch is %f seconds.\n", timeSpentDefault);
+            printf("\nThe elapsed time in Sequential Fetch is %filePartition seconds.\n", timeSpentDefault);
             printf("Total of comparisons in Sequential Fetch: %i.\n", totalComparisonsSequential);
 
-            printf("\nThe elapsed time in Binary Fetch is %f seconds.\n", timeSpentBinaryFetch);
+            printf("\nThe elapsed time in Binary Fetch is %filePartition seconds.\n", timeSpentBinaryFetch);
             printf("Total of comparisons in Binary Fetch: %i.\n", totalComparisonsBinaryFetch);
 
             free(func);
