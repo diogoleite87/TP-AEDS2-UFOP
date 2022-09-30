@@ -19,6 +19,13 @@ struct KeyID {
     long RRN;
 };
 
+typedef struct File{
+    TFunc *func;
+    long init_p;
+    long end_p;
+    FILE *filePartition;
+}TVetFile;
+
 void saveRegisterEmployee(TFunc *func, FILE *out);
 TFunc *readRegisterEmployee(FILE *in);
 void createDataBase(FILE *arq, int nFunc, int *vet);
@@ -35,6 +42,7 @@ void mergeSort(int numberOfPartition, char nameFilePartition[]);
 int substitutionSelection (FILE *file, char nameFilePartition[]);
 int naturalSelection(FILE *file, char nameFilePartition[]);
 void printAllEmployeeFile(FILE *file);
-void BinaryTreeOfWinners(int numberOfPartition, char nameFilePartition[]);
+void binaryTreeOfWinners(int numberOfPartition, char nameFilePartition[]);
+void treeWinner(TFunc **func, FILE *file, int sizeInTreeOfWinners, int *auxTreeWinner);
 
 #endif
