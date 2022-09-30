@@ -10,7 +10,7 @@ void mergeSort(int numberOfPartition, char nameFilePartition[]) {
     int *vetFinalPartition = (int *) malloc(numberOfPartition * sizeof(int));
     int *vetPositionPartition = (int *) malloc(numberOfPartition * sizeof(int));
     int *vetValueEmployeePartition = (int *) malloc(numberOfPartition * sizeof(int));
-    int flagAuxFinal = 0, count, smallElement = 999999999, smallElementPosition = 0;
+    int flagAuxFinal = 0, count, smallElement = INT_MAX, smallElementPosition = 0;
 
     FILE *auxFileFinal = fopen("mergeSortFileSorted.dat", "wb+");
 
@@ -92,7 +92,7 @@ void mergeSort(int numberOfPartition, char nameFilePartition[]) {
 
         fclose(filePartition);
 
-        smallElement = 999999999;
+        smallElement = INT_MAX;
 
     }
 
