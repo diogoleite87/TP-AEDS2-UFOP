@@ -43,7 +43,7 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection and Binary Tree Of Winners;\n 5 - Tree B;\n 6 - Tree B+. \n --->  ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection and Binary Tree Of Winners;\n  --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
@@ -169,7 +169,7 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection and Binary Tree Of Winners;\n 5 - Tree B;\n 6 - Tree B+. \n --->  ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection and Binary Tree Of Winners;\n  --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
@@ -238,7 +238,7 @@ int main() {
                 fclose(file);
 
                 return 0;
-            } else if (sortingMethod == 4 ){
+            } else {
                 int numberOfPartition = 1;
                 numberOfPartition += naturalSelection(file, "naturalSelectionPartition");
                 binaryTreeOfWinners(numberOfPartition, "naturalSelectionPartition");
