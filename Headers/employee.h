@@ -44,5 +44,10 @@ int naturalSelection(FILE *file, char nameFilePartition[]);
 void printAllEmployeeFile(FILE *file);
 void binaryTreeOfWinners(int numberOfPartition, char nameFilePartition[]);
 void treeWinner(TFunc **func, FILE *file, int sizeInTreeOfWinners, int *auxTreeWinner);
+void makePartitionHashTable (int numberOfPartition);
+void hashTable(FILE *file, int numberOfPartition, int sizeFile);
+TFunc *searchHashTable(int employerID, int partitionID);
+void insertHashTable(TFunc *funcHashTableInsert,int employerID, int partitionID);
+void deleteHashTable(int employerID, int partitionID);
 
 #endif
