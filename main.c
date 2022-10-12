@@ -43,7 +43,7 @@ int main() {
                 printEmployee(func);
             }
 
-            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection and Binary Tree Of Winners;\n  --->  ");
+            printf("\nInput Sorting method: \n 1 - InsertionSort;\n 2 - KeySort;\n 3 - Substitution Selection and MergeSort;\n 4 - Natural Selection and Binary Tree Of Winners; \n 5 - Hash Table.\n  --->  ");
             scanf("%i", &sortingMethod);
 
             if (sortingMethod == 1) {
@@ -139,7 +139,7 @@ int main() {
 
                 while (flagAux != 5) {
 
-                    printf("\n\nInput an option: \n 1 - Insert employee; \n 2 - Search Employee; \n 3 - Delete employee; \n 4 - Print employee IDs; \n 5 - Close program. \n ----> ");
+                    printf("\n\nInput an option: \n 1 - Insert Employee; \n 2 - Search Employee; \n 3 - Delete Employee; \n 4 - Print Employee IDs; \n 5 - Close program. \n ----> ");
                     scanf("%i", &flagAux);
 
                     if (flagAux == 1) {
@@ -379,7 +379,7 @@ int main() {
 
                 while (flagAux != 5) {
 
-                    printf("\n\nInput an option: \n 1 - Insert employee; \n 2 - Search Employee; \n 3 - Delete employee; \n 4 - Print employee IDs; \n 5 - Close program. \n ----> ");
+                    printf("\n\nInput an option: \n 1 - Insert Employee; \n 2 - Search Employee; \n 3 - Delete Employee; \n 4 - Print employee IDs; \n 5 - Close program. \n ----> ");
                     scanf("%i", &flagAux);
 
                     if (flagAux == 1) {
