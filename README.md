@@ -18,7 +18,7 @@
     <li>Método de Seleção Natural (NaturalSelection)</li>
     <li>Método de Ordenação por Mesclagem (MergeSort)</li>
     <li>Método de Ordenação por Árvore Binaria de Vencedores (ThreeOfWinners)</li>
-    <li>Tabela Hash (HashTable)</li>
+    <li>Tabela Hash (HashTable) com Encadeamento Exterior</li>
     <li>Busca, Remoção e Inserção na Tabela Hash</li>
 </ul>
 
